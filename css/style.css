@@ -386,3 +386,13 @@ label.btn:focus-within { box-shadow: var(--focus); }
   .hand.mn, .pop-heart { animation: none !important; }
   .pop-heart { display: none; }
 }
+
+/* turtle / rabbit icons under the camera speed slider */
+.speed-icon { display: inline-flex; color: var(--red); }
+.speed-icon svg { width: 40px; height: 28px; fill: currentColor; }
+
+/* text that screen readers announce but nobody sees */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}

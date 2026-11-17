@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Date Anything – Comfort Edition</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main id="game" aria-label="Game">
+
+    <!-- 3D view. The camera moves the #world; brightness + blur filters go on #viewport -->
+    <div id="viewport" aria-hidden="true">
+      <div id="world"></div>
+    </div>
+    <!-- Light effects layer (party strobe / steady glow) -->
+    <div id="lightFx" aria-hidden="true"></div>
+
+    <!-- ================= HUD (matches the whiteboard layout) ================= -->
+    <!-- Top-left: "One easy button" opens Extended Settings -->
+    <button id="btnSettings" class="hud-btn easy-btn" aria-label="Open accessibility settings (Esc)" title="Settings (Esc)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.5 7.5 0 0 0-1.7-1L15 3.3h-4l-.4 2.6a7.5 7.5 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.5 7.5 0 0 0 1.7 1l.4 2.6h4l.4-2.6a7.5 7.5 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>
+    </button>
+
+    <!-- Top-right: day + hearts -->
+    <div id="dayCard" class="hud-card" aria-live="polite">
+      <div class="sun" aria-hidden="true"></div>
+      <div>
+        <div id="dayName" class="day-name">Thursday</div>
+        <div id="heartRow" class="heart-row" aria-label="Hearts"></div>
+      </div>
+    </div>
+
+    <!-- Bottom-left: date specs (glasses) + door (end day) -->
+    <div class="hud-corner bl">
+      <button id="btnSpecs" class="hud-btn" aria-pressed="false" aria-label="Put on Date Specs (G)" title="Date Specs (G)">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="17" r="6"/><circle cx="23" cy="17" r="6"/><path d="M15 16q1-2 2 0M3 15 1 11M29 15l2-4"/></svg>
+      </button>
+      <button id="btnDoor" class="hud-btn" aria-label="End the day" title="End day">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4h16v24H8z"/><circle cx="20" cy="17" r="1.5"/><path d="M4 28h24"/></svg>
+      </button>
+    </div>
+
+    <!-- Bottom-right: inspect + relationships -->
+    <div class="hud-corner br">
+      <button id="btnInspect" class="hud-btn" aria-label="Inspect / talk (E)" title="Inspect (E)">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="14" cy="14" r="8"/><path d="m20 20 7 7"/></svg>
+      </button>
+      <button id="btnHearts" class="hud-btn" aria-label="Relationships (R)" title="Relationships (R)">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27S4 19.5 4 11.5A6 6 0 0 1 16 9a6 6 0 0 1 12 2.5C28 19.5 16 27 16 27z"/></svg>
+      </button>
+    </div>
+
+    <div id="prompt" role="status" aria-live="polite"></div>
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Dialogue box -->
+    <section id="dialogue" hidden aria-live="polite">
+      <div id="dlgName" class="dlg-name"></div>
+      <p id="dlgText"></p>
+      <div id="dlgChoices" class="dlg-choices"></div>
+    </section>
+
+    <!-- Controls hint -->
+    <aside id="help" class="hud-card">
+      <b>Move</b> W A S D &nbsp;·&nbsp; <b>Turn</b> ← → &nbsp;·&nbsp; <b>Talk</b> E &nbsp;·&nbsp; <b>Specs</b> G &nbsp;·&nbsp; <b>Settings</b> Esc
+      <button id="helpClose" class="link-btn" aria-label="Hide controls hint">✕</button>
+    </aside>
+  </main>
+
+  <!-- ================= EXTENDED SETTINGS (browser-tab style window) ================= -->
+  <div id="settingsBackdrop" hidden>
+    <section id="settings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+
+      <!-- Tab strip, like browser tabs -->
+      <div class="tab-strip" role="tablist" aria-label="Settings categories">
+        <button role="tab" id="tab-camera" aria-controls="panel-camera" aria-selected="true" class="tab">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="9" width="20" height="15" rx="2"/><path d="m23 14 6-4v13l-6-4"/><circle cx="13" cy="16.5" r="3.5"/></svg>
+          <span>Camera</span>
+        </button>
+        <button role="tab" id="tab-lighting" aria-controls="panel-lighting" aria-selected="false" class="tab" tabindex="-1">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4a8 8 0 0 0-4.5 14.6V22h9v-3.4A8 8 0 0 0 16 4zM12.5 26h7M14 29h4"/></svg>
+          <span>Lighting</span>
+        </button>
+        <button role="tab" id="tab-avatar" aria-controls="panel-avatar" aria-selected="false" class="tab" tabindex="-1">
+          <span class="ga-icon" aria-hidden="true">GA</span>
+          <span>Ghost Avatar</span>
+        </button>
+        <button role="tab" id="tab-save" aria-controls="panel-save" aria-selected="false" class="tab" tabindex="-1">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 5h18l4 4v18H5z"/><path d="M10 5v7h11V5M9 27v-9h14v9"/></svg>
+          <span>Save</span><i id="unsavedDot" class="unsaved-dot" hidden title="Unsaved changes"></i>
+        </button>
+        <button id="settingsClose" class="close-x" aria-label="Close settings">✕</button>
+      </div>
+
+      <div class="window">
+        <h1 id="settingsTitle">Extended Settings</h1>
+        <p class="sub">Changes preview live behind this window.</p>
+
+        <!-- ---------- CAMERA ---------- -->
+        <div role="tabpanel" id="panel-camera" aria-labelledby="tab-camera" class="panel">
+          <div class="row">
+            <label for="camSpeed">Camera speed</label>
+            <div class="slider-wrap">
+              <button class="step" data-for="camSpeed" data-dir="-1" aria-label="Slower">−</button>
+              <input type="range" id="camSpeed" min="1" max="10" step="1" />
+              <button class="step" data-for="camSpeed" data-dir="1" aria-label="Faster">+</button>
+              <output for="camSpeed" id="camSpeedOut"></output>
+            </div>
+            <div class="scale-labels"><span>Slow</span><span>Fast</span></div>
+          </div>
+
+          <fieldset class="row">
+            <legend>POV</legend>
+            <div class="pov-group">
+              <label class="pov-card"><input type="radio" name="pov" value="left" />
+                <span class="pov-shape left" aria-hidden="true"></span><span>Left shoulder</span></label>
+              <label class="pov-card"><input type="radio" name="pov" value="center" />
+                <span class="pov-shape center" aria-hidden="true"></span><span>Top of head</span></label>
+              <label class="pov-card"><input type="radio" name="pov" value="right" />
+                <span class="pov-shape right" aria-hidden="true"></span><span>Right shoulder</span></label>
+            </div>
+            <p class="note" id="povNote" hidden>POV applies when the Ghost Avatar is on. With it off you see in first person.</p>
+          </fieldset>
+
+          <div class="row two-col">
+            <div>
+              <span class="label">Camera position</span>
+              <label class="mini" for="camHeight">Height</label>
+              <div class="slider-wrap">
+                <button class="step" data-for="camHeight" data-dir="-1" aria-label="Lower camera">↓</button>
+                <input type="range" id="camHeight" min="-100" max="100" step="10" />
+                <button class="step" data-for="camHeight" data-dir="1" aria-label="Raise camera">↑</button>
+              </div>
+              <label class="mini" for="camDistance">Distance</label>
+              <div class="slider-wrap">
+                <button class="step" data-for="camDistance" data-dir="-1" aria-label="Move camera closer">←</button>
+                <input type="range" id="camDistance" min="140" max="420" step="20" />
+                <button class="step" data-for="camDistance" data-dir="1" aria-label="Move camera further">→</button>
+              </div>
+            </div>
+            <div>
+              <label class="label" for="camZoom">Zoom</label>
+              <div class="slider-wrap">
+                <button class="step" data-for="camZoom" data-dir="-1" aria-label="Zoom out">−</button>
+                <input type="range" id="camZoom" min="70" max="140" step="5" />
+                <button class="step" data-for="camZoom" data-dir="1" aria-label="Zoom in">+</button>
+                <output for="camZoom" id="camZoomOut"></output>
+              </div>
+            </div>
+          </div>
+
+          <div class="row checks">
+            <label class="check"><input type="checkbox" id="steadyCam" /><span class="box" aria-hidden="true"></span>
+              Steady cam <small>No head-bob, smoother turning</small></label>
+            <label class="check"><input type="checkbox" id="motionBlur" /><span class="box" aria-hidden="true"></span>
+              Motion blur <small>Off is more comfortable for most people</small></label>
+          </div>
+        </div>
+
+        <!-- ---------- LIGHTING ---------- -->
+        <div role="tabpanel" id="panel-lighting" aria-labelledby="tab-lighting" class="panel" hidden>
+          <div class="row">
+            <label for="brightness">Brightness</label>
+            <div class="slider-wrap">
+              <button class="step" data-for="brightness" data-dir="-1" aria-label="Dimmer">−</button>
+              <input type="range" id="brightness" min="50" max="150" step="5" />
+              <button class="step" data-for="brightness" data-dir="1" aria-label="Brighter">+</button>
+              <output for="brightness" id="brightnessOut"></output>
+            </div>
+            <div class="scale-labels"><span>Dim</span><span>Bright</span></div>
+          </div>
+          <div class="row checks">
+            <label class="check"><input type="checkbox" id="removeStrobe" /><span class="box" aria-hidden="true"></span>
+              Strobe lighting removed <small>Flashing effects become a slow, steady glow</small></label>
+          </div>
+          <div class="row">
+            <button id="testLight" class="btn ghost-btn">Preview party lights</button>
+          </div>
+        </div>
+
+        <!-- ---------- GHOST AVATAR ---------- -->
+        <div role="tabpanel" id="panel-avatar" aria-labelledby="tab-avatar" class="panel" hidden>
+          <div class="row checks">
+            <label class="check"><input type="checkbox" id="avatarOn" /><span class="box" aria-hidden="true"></span>
+              Ghost Avatar <small>Walk as a see-through ghost instead of first person</small></label>
+          </div>
+          <div class="row opacity-row">
+            <div class="grow">
+              <label for="avatarOpacity">Opacity</label>
+              <div class="slider-wrap">
+                <button class="step" data-for="avatarOpacity" data-dir="-1" aria-label="More see-through">−</button>
+                <input type="range" id="avatarOpacity" min="20" max="100" step="5" />
+                <button class="step" data-for="avatarOpacity" data-dir="1" aria-label="More solid">+</button>
+                <output for="avatarOpacity" id="avatarOpacityOut"></output>
+              </div>
+              <div class="scale-labels"><span>20%</span><span>100%</span></div>
+            </div>
+            <div id="opacityPreview" class="ghost-preview small" aria-hidden="true"></div>
+          </div>
+
+          <div class="row">
+            <span class="label">Custom avatar</span>
+            <div class="char-select">
+              <button id="charPrev" class="carousel-btn" aria-label="Previous character">◀</button>
+              <div class="char-stage">
+                <div id="charBig" class="ghost-preview big" aria-hidden="true"></div>
+                <div id="charName" class="char-name"></div>
+                <div id="charTag" class="char-tag"></div>
+              </div>
+              <button id="charNext" class="carousel-btn" aria-label="Next character">▶</button>
+            </div>
+            <div id="charThumbs" class="char-thumbs" role="radiogroup" aria-label="Choose a ghost"></div>
+          </div>
+        </div>
+
+        <!-- ---------- SAVE ---------- -->
+        <div role="tabpanel" id="panel-save" aria-labelledby="tab-save" class="panel" hidden>
+          <div class="save-center">
+            <button id="saveBtn" class="save-big">
+              <span class="save-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></svg></span>
+              <span>Save my settings</span>
+            </button>
+            <p id="saveStatus" class="save-status" role="status" aria-live="polite"></p>
+            <p class="note">Saved settings load automatically every time the game opens on this browser.</p>
+            <div class="save-actions">
+              <button id="exportBtn" class="btn ghost-btn">Export (.json)</button>
+              <label class="btn ghost-btn" for="importFile">Import (.json)</label>
+              <input type="file" id="importFile" accept="application/json,.json" hidden />
+              <button id="resetBtn" class="btn ghost-btn danger">Reset to defaults</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Relationships panel -->
+  <div id="relBackdrop" hidden>
+    <section id="relPanel" role="dialog" aria-modal="true" aria-labelledby="relTitle">
+      <button id="relClose" class="close-x" aria-label="Close relationships">✕</button>
+      <h2 id="relTitle">Relationships</h2>
+      <ul id="relList"></ul>
+    </section>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

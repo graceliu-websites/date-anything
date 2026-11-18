@@ -83,7 +83,11 @@
           <span>Lighting</span>
         </button>
         <button role="tab" id="tab-avatar" aria-controls="panel-avatar" aria-selected="false" class="tab" tabindex="-1">
-          <span class="ga-icon" aria-hidden="true">GA</span>
+          <svg class="tab-chibi" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M8.5 18.5Q16 16 23.5 18.5L25 30l-2.8-2.2-2.7 2.2-2.8-2.2-2.7 2.2-2.8-2.2L7 30z"/>
+            <circle cx="16" cy="11" r="9"/>
+            <ellipse class="eye" cx="12.6" cy="12" rx="1.6" ry="2.2"/><ellipse class="eye" cx="19.4" cy="12" rx="1.6" ry="2.2"/>
+          </svg>
           <span>Ghost Avatar</span>
         </button>
         <button role="tab" id="tab-save" aria-controls="panel-save" aria-selected="false" class="tab" tabindex="-1">
@@ -218,7 +222,7 @@
               </div>
               <button id="charNext" class="carousel-btn" aria-label="Next character">▶</button>
             </div>
-            <div id="charThumbs" class="char-thumbs" role="radiogroup" aria-label="Choose a ghost"></div>
+            <div id="charThumbs" class="char-thumbs" role="radiogroup" aria-label="Choose an avatar"></div>
           </div>
         </div>
 
@@ -253,6 +257,7 @@
   </div>
 
   <script src="js/data.js"></script>
+  <script src="js/avatars.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/game.js"></script>
 </body>

@@ -35,25 +35,7 @@ function safeSave(obj) {
   catch (e) { return false; }
 }
 
-/* ---------- ghost artwork (shared by game + settings previews) ---------- */
-function ghostSVG(av) {
-  const hats = {
-    none: "",
-    bow: `<path d="M50 20 34 10q-6 10 0 20zM50 20l16-10q6 10 0 20z" fill="${av.accent}"/><circle cx="50" cy="20" r="5" fill="${av.accent}"/>`,
-    ears: `<path d="M24 34 22 8l20 16zM76 34l2-26-20 16z" fill="${av.color}" stroke="${av.accent}" stroke-width="3" stroke-linejoin="round"/>`,
-    wizard: `<path d="M26 30 52 -6l22 36z" fill="${av.accent}"/><circle cx="50" cy="12" r="3" fill="#fff6a8"/><path d="M18 30h66" stroke="${av.accent}" stroke-width="6" stroke-linecap="round"/>`
-  };
-  return `<svg viewBox="0 -8 100 128" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 14C26 14 16 34 16 58v52l11-8 11 8 12-8 12 8 11-8 11 8V58C84 34 74 14 50 14z"
-      fill="${av.color}" stroke="${av.accent}" stroke-width="3" stroke-linejoin="round"/>
-    ${hats[av.hat] || ""}
-    <ellipse cx="38" cy="54" rx="5" ry="7" fill="#2b2140"/>
-    <ellipse cx="62" cy="54" rx="5" ry="7" fill="#2b2140"/>
-    <ellipse cx="30" cy="68" rx="6" ry="3.5" fill="${av.accent}" opacity=".45"/>
-    <ellipse cx="70" cy="68" rx="6" ry="3.5" fill="${av.accent}" opacity=".45"/>
-    <path d="M44 70q6 6 12 0" fill="none" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  </svg>`;
-}
+/* avatar artwork (ghostSVG) lives in js/avatars.js */
 const avatarById = (id) => AVATARS.find((a) => a.id === id) || AVATARS[0];
 
 /* =========================================================

@@ -236,7 +236,8 @@ kbd {
 .tab svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .tab[aria-selected="true"] { background: var(--paper); z-index: 2; padding-bottom: 15px; }
 .tab:not([aria-selected="true"]):hover { background: #fff0ee; }
-.ga-icon { display: grid; place-items: center; width: 30px; height: 24px; border: 2.4px solid currentColor; border-radius: 5px; font-size: 13px; font-weight: 900; }
+.tab svg.tab-chibi { fill: currentColor; stroke: none; width: 28px; height: 28px; }
+.tab-chibi .eye { fill: #fff; }
 .unsaved-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); display: inline-block; }
 .close-x {
   margin-left: auto; align-self: center; width: 44px; height: 44px; border-radius: 50%;
@@ -323,7 +324,7 @@ input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: var(--focu
   repeating-conic-gradient(#efe6f7 0 25%, #fff 0 50%) 0 0 / 20px 20px; border-radius: 16px; border: 2.5px solid #f0cfcb; }
 .ghost-preview svg { width: 80%; height: 80%; }
 .ghost-preview.small { width: 96px; height: 110px; flex: none; }
-.ghost-preview.big { width: 150px; height: 170px; background: radial-gradient(#fff, #ffe9f2); border: 0; }
+.ghost-preview.big { width: 130px; height: 150px; background: radial-gradient(#fff, #ffe9f2); border: 0; }
 
 .char-select { display: flex; align-items: center; justify-content: center; gap: 16px;
   padding: 14px; border-radius: 20px; background: linear-gradient(160deg, #ffe1ec, #e6e1ff); }
@@ -331,12 +332,12 @@ input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: var(--focu
 .char-name { font-size: 24px; font-weight: 900; }
 .char-tag { font-size: 14px; opacity: .75; }
 .carousel-btn { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--ink); background: #fff; font-size: 18px; }
-.char-thumbs { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+.char-thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 12px; }
 .char-thumb {
-  width: 76px; display: grid; justify-items: center; padding: 6px 4px; border-radius: 14px;
+  display: grid; justify-items: center; padding: 6px 4px; border-radius: 14px;
   border: 2.5px solid #f0cfcb; background: #fff; font-size: 12px; font-weight: 800;
 }
-.char-thumb svg { width: 48px; height: 56px; }
+.char-thumb svg { width: 44px; height: 52px; }
 .char-thumb[aria-checked="true"] { border-color: var(--red); background: var(--red-soft); }
 
 /* save tab */
@@ -375,7 +376,8 @@ label.btn:focus-within { box-shadow: var(--focus); }
 /* small screens */
 @media (max-width: 640px) {
   .two-col { grid-template-columns: 1fr; }
-  .tab span:not(.ga-icon):not(.unsaved-dot) { display: none; }
+  .char-thumbs { grid-template-columns: repeat(4, 1fr); }
+  .tab span:not(.unsaved-dot) { display: none; }
   #help { display: none; }
   #dialogue { width: calc(100vw - 40px); bottom: 180px; }
 }
@@ -385,16 +387,6 @@ label.btn:focus-within { box-shadow: var(--focus); }
   *, *::before, *::after { transition-duration: .01ms !important; }
   .hand.mn, .pop-heart { animation: none !important; }
   .pop-heart { display: none; }
-}
-
-/* turtle / rabbit icons under the camera speed slider */
-.speed-icon { display: inline-flex; color: var(--red); }
-.speed-icon svg { width: 40px; height: 28px; fill: currentColor; }
-
-/* text that screen readers announce but nobody sees */
-.sr-only {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip: rect(0 0 0 0); white-space: nowrap;
 }
 
 /* picture buttons: turtle/rabbit (camera speed), moon/sun (brightness) */

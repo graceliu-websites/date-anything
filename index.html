@@ -102,35 +102,16 @@
           <div class="row">
             <label for="camSpeed">Camera speed</label>
             <div class="slider-wrap">
-              <button class="step" data-for="camSpeed" data-dir="-1" aria-label="Slower">−</button>
+                <button class="step icon-step" data-for="camSpeed" data-dir="-1" aria-label="Slower" title="Slower">
+                  <svg viewBox="0 0 64 40" aria-hidden="true"><path d="M10 28C10 15 19 7 31 7s21 8 21 21z"/><ellipse cx="57" cy="24" rx="6" ry="5"/><rect x="48" y="23" width="6" height="5"/><rect x="14" y="27" width="7" height="8" rx="3"/><rect x="40" y="27" width="7" height="8" rx="3"/><path d="M10 26 3 30l8 1z"/></svg>
+                </button>
               <input type="range" id="camSpeed" min="1" max="10" step="1" />
-              <button class="step" data-for="camSpeed" data-dir="1" aria-label="Faster">+</button>
+                <button class="step icon-step" data-for="camSpeed" data-dir="1" aria-label="Faster" title="Faster">
+                  <svg viewBox="0 0 64 48" aria-hidden="true"><ellipse cx="28" cy="32" rx="18" ry="11"/><circle cx="47" cy="22" r="8"/><ellipse cx="44" cy="8" rx="3.5" ry="9" transform="rotate(-20 44 8)"/><ellipse cx="51" cy="8" rx="3.5" ry="9" transform="rotate(10 51 8)"/><circle cx="9" cy="28" r="5"/><path d="M36 38l14 6-2 2-15-4zM14 38l-6 7h5l7-5z"/></svg>
+                </button>
               <output for="camSpeed" id="camSpeedOut"></output>
             </div>
-              <div class="scale-labels">
-                <span class="speed-icon" title="Slow">
-                  <svg viewBox="0 0 64 40" aria-hidden="true">
-                    <path d="M10 28C10 15 19 7 31 7s21 8 21 21z"/>
-                    <ellipse cx="57" cy="24" rx="6" ry="5"/>
-                    <rect x="48" y="23" width="6" height="5"/>
-                    <rect x="14" y="27" width="7" height="8" rx="3"/>
-                    <rect x="40" y="27" width="7" height="8" rx="3"/>
-                    <path d="M10 26 3 30l8 1z"/>
-                  </svg>
-                  <span class="sr-only">Slow</span>
-                </span>
-                <span class="speed-icon" title="Fast">
-                  <svg viewBox="0 0 64 48" aria-hidden="true">
-                    <ellipse cx="28" cy="32" rx="18" ry="11"/>
-                    <circle cx="47" cy="22" r="8"/>
-                    <ellipse cx="44" cy="8" rx="3.5" ry="9" transform="rotate(-20 44 8)"/>
-                    <ellipse cx="51" cy="8" rx="3.5" ry="9" transform="rotate(10 51 8)"/>
-                    <circle cx="9" cy="28" r="5"/>
-                    <path d="M36 38l14 6-2 2-15-4zM14 38l-6 7h5l7-5z"/>
-                  </svg>
-                  <span class="sr-only">Fast</span>
-                </span>
-              </div>
+              <div class="scale-labels"><span>Slow</span><span>Fast</span></div>
           </div>
 
           <fieldset class="row">
@@ -186,9 +167,13 @@
           <div class="row">
             <label for="brightness">Brightness</label>
             <div class="slider-wrap">
-              <button class="step" data-for="brightness" data-dir="-1" aria-label="Dimmer">−</button>
+                <button class="step icon-step" data-for="brightness" data-dir="-1" aria-label="Dimmer" title="Dimmer">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3.5A8.5 8.5 0 1 0 20.5 16 7 7 0 0 1 15.5 3.5z"/></svg>
+                </button>
               <input type="range" id="brightness" min="50" max="150" step="5" />
-              <button class="step" data-for="brightness" data-dir="1" aria-label="Brighter">+</button>
+                <button class="step icon-step" data-for="brightness" data-dir="1" aria-label="Brighter" title="Brighter">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path class="rays" d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>
+                </button>
               <output for="brightness" id="brightnessOut"></output>
             </div>
             <div class="scale-labels"><span>Dim</span><span>Bright</span></div>
